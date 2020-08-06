@@ -1,23 +1,25 @@
 # frozen_string_literal: true
-require 'cancancan'
 
+# Authorized ability made by cancancan
 class Ability
   include CanCan::Ability
 
   def initialize(user)
-    send("#{user.role}_abilities", user)
+    # alias_action :create, :to => :create
+    send("#{user.role}_abilities")
   end
 
-  def admin_abilities(user)
+  def admin_abilities
     can :manage, :all
   end
 
-  def curation_abilities(user)
-    can [:read, :create], Product
+  def curation_abilities
+    can %i[read create], Product
   end
 
-  def visitor_abilities(user)
-    can :read, all
+  def visitor_abilities
+    can :index, Product
+    can :show, Product, { id: 13 }
   end
 
   def to_list
