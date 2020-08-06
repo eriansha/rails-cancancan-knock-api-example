@@ -1,5 +1,5 @@
 # Controller for JWT Token using Knock
-module Api
+module API
   module V1
     module Authentication
       class UserTokenController < Knock::AuthTokenController
