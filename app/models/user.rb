@@ -3,9 +3,8 @@ class User < ActiveRecord::Base
 
   def to_token_payload
     {
-      sub: id,
-      email: email,
-      test: ""
+      name: self.name,
+      rules: Ability.new(self).to_list
     }
   end
 end
