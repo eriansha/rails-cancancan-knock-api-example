@@ -13,7 +13,7 @@ class Ability
   end
 
   def curation_abilities(user)
-    can [:read, :update], User
+    can [:read, :create], Product
   end
 
   def visitor_abilities(user)
