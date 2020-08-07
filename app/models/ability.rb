@@ -5,7 +5,6 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # alias_action :create, :to => :create
     send("#{user.role}_abilities")
   end
 
@@ -14,12 +13,16 @@ class Ability
   end
 
   def curation_abilities
-    can %i[read create], Product
+    can %i[read create], :'API::V1::Admins::ProductsController'
+    can :read, :'API::V1::Admins::UsersController'
   end
 
   def visitor_abilities
-    can :index, Product
-    can :show, Product, { id: 13 }
+    can :read, [
+      :'API::V1::Admins::ProductsController',
+      :'API::V1::Admins::UsersController'
+    ]
+    can :read, :'API::V1::Customers::SomethingsController'
   end
 
   def to_list

@@ -3,18 +3,34 @@ module API
     module Admins
       class ProductsController < ApplicationController
         before_action :authenticate_user
-        load_and_authorize_resource class: 'Product'
+        authorize_resource class: :'API::V1::Admins::ProductsController'
 
         def index
-          @products = Product.all
+          products = API::V1::Admins::Products::FilterManager.execute
           render(
-            json: @products,
+            json: products,
             root: 'products'
           )
         end
 
         def create
-          Product.create!(
+          product = API::V1::Admins::Products::CreateManager.execute(
+            name: create_params[:name],
+            brand: create_params[:brand],
+            category: create_params[:category],
+            colour: create_params[:colour],
+            condition: create_params[:condition],
+            price: create_params[:price],
+            quantity: create_params[:quantity]
+          )
+          render(
+            json: product,
+            root: 'product'
+          )
+        end
+
+        def assign
+          API::V1::Admins::Products::CreateManager.execute(
             name: create_params[:name],
             brand: create_params[:brand],
             category: create_params[:category],
@@ -26,7 +42,7 @@ module API
         end
 
         def show
-          product = Product.find_by(id: show_params[:id])
+          product = API::V1::Admins::Products::ShowManager.execute(id: show_params[:id])
           render(
             json: product,
             root: 'product'
@@ -48,7 +64,7 @@ module API
             :name,
             :brand,
             :category,
-            :color,
+            :colour,
             :condition,
             :price,
             :quantity
