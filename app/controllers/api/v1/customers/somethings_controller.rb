@@ -6,23 +6,23 @@ module API
         authorize_resource class: :'API::V1::Customers::SomethingsController'
 
         def index
-          products = API::V1::Admins::Products::FilterManager.execute
           render(
-            json: products,
-            root: 'products'
+            json: 'Showing multiple entity',
+            root: 'something',
+            status: :ok
           )
         end
 
         def show
-          product = API::V1::Admins::Products::ShowManager.execute(id: show_params[:id])
           render(
-            json: product,
-            root: 'product'
+            json: 'Showing single entity', 
+            root: 'something',
+            status: :ok
           )
         end
 
         def create
-          render( json: 'Product is created', root: 'product')
+          render(json: 'Something is created', root: 'something')
         end
 
         private
